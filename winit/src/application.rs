@@ -247,7 +247,8 @@ async fn run_instance<A, E, C>(
     let mut clipboard = Clipboard::connect(&window);
     let mut cache = user_interface::Cache::default();
     let mut surface = compositor.create_surface(&window);
-    let mut visible = false;
+    // let mut visible = false; // TEMPORARILY REMOVED because of workaround for https://github.com/iced-rs/iced/issues/1419
+
 
     let mut state = State::new(&application, &window);
     let mut viewport_version = state.viewport_version();
@@ -286,6 +287,11 @@ async fn run_instance<A, E, C>(
     let mut mouse_interaction = mouse::Interaction::default();
     let mut events = Vec::new();
     let mut messages = Vec::new();
+
+    // This is a temporary workaround for: https://github.com/iced-rs/iced/issues/1419
+    if should_be_visible {
+        window.set_visible(true)
+    }
 
     debug.startup_finished();
 
@@ -447,11 +453,12 @@ async fn run_instance<A, E, C>(
                     Ok(()) => {
                         debug.render_finished();
 
-                        if !visible && should_be_visible {
-                            window.set_visible(true);
+                        // TEMPORARILY REMOVED because of workaround for https://github.com/iced-rs/iced/issues/1419
+                        // if !visible && should_be_visible {
+                        //     window.set_visible(true);
 
-                            visible = true;
-                        }
+                        //     visible = true;
+                        // }
 
                         // TODO: Handle animations!
                         // Maybe we can use `ControlFlow::WaitUntil` for this.
