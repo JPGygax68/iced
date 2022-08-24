@@ -194,6 +194,7 @@ use iced_glow as renderer;
 pub use iced_native::theme;
 pub use runtime::event;
 pub use runtime::subscription;
+pub use iced_lazy as lazy;
 
 pub use application::Application;
 pub use element::Element;
